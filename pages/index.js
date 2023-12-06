@@ -3,19 +3,17 @@ import styles from "../styles/Home.module.css";
 import { Metaplex } from "@metaplex-foundation/js";
 import { clusterApiUrl, Connection, PublicKey } from "@solana/web3.js";
 import { useState } from "react";
+import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 
 const connection = new Connection(clusterApiUrl("devnet"));
 const mx = Metaplex.make(connection);
 
 export default function Home() {
-  const [address, setAddress] = useState(
-    "3ijFZcJKmp1EnDbbuaumWYvEFbztx9NRupwTXTchK9bP"
-  );
+  const [address, setAddress] = useState("3ijFZcJKmp1EnDbbuaumWYvEFbztx9NRupwTXTchK9bP");
   const [nft, setNft] = useState(null);
 
   const fetchNft = async () => {
     const asset = await mx.nfts().findByMint({ mintAddress: new PublicKey(address) });
-
     setNft(asset);
   };
 
@@ -27,7 +25,12 @@ export default function Home() {
       </Head>
 
       <div className={styles.App}>
-        <div className={styles.container}>
+        <div className={styles.AppHeader}>
+          <p>App</p>
+          <WalletMultiButton />
+        </div>
+
+        <div className={styles.AppBody}>
           <h1 className={styles.title}>NFT Mint Address</h1>
           <div className={styles.nftForm}>
             <input
