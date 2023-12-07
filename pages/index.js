@@ -3,7 +3,13 @@ import styles from "../styles/Home.module.css";
 import { Metaplex } from "@metaplex-foundation/js";
 import { clusterApiUrl, Connection, PublicKey } from "@solana/web3.js";
 import { useState } from "react";
-import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
+import { MintNFTs } from "../components/MintNFTs";
+
+import dynamic from 'next/dynamic';
+const WalletMultiButtonDynamic = dynamic(
+  async () => (await import('@solana/wallet-adapter-react-ui')).WalletMultiButton,
+  { ssr: false }
+);
 
 const connection = new Connection(clusterApiUrl("devnet"));
 const mx = Metaplex.make(connection);
@@ -27,10 +33,12 @@ export default function Home() {
       <div className={styles.App}>
         <div className={styles.AppHeader}>
           <p>App</p>
-          <WalletMultiButton />
+          <WalletMultiButtonDynamic />
         </div>
 
         <div className={styles.AppBody}>
+          <MintNFTs />
+
           <h1 className={styles.title}>NFT Mint Address</h1>
           <div className={styles.nftForm}>
             <input
